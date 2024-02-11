@@ -1,0 +1,33 @@
+#RAID 5
+mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/nvme0n2 /dev/nvme0n3 /dev/nvme0n4
+
+
+Вывод команды lsblk до создания raid5
+[root@localhost lesson2]# lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0          11:0    1  946M  0 rom
+nvme0n1     259:0    0   30G  0 disk
+├─nvme0n1p1 259:1    0    1G  0 part /boot
+└─nvme0n1p2 259:2    0   29G  0 part
+  ├─cs-root 253:0    0   27G  0 lvm  /
+  └─cs-swap 253:1    0    2G  0 lvm  [SWAP]
+nvme0n2     259:3    0    1G  0 disk
+nvme0n3     259:4    0    1G  0 disk
+nvme0n4     259:5    0    1G  0 disk
+
+Вывод после
+NAME        MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sr0          11:0    1  946M  0 rom
+nvme0n1     259:0    0   30G  0 disk
+├─nvme0n1p1 259:1    0    1G  0 part  /boot
+└─nvme0n1p2 259:2    0   29G  0 part
+  ├─cs-root 253:0    0   27G  0 lvm   /
+  └─cs-swap 253:1    0    2G  0 lvm   [SWAP]
+nvme0n2     259:3    0    1G  0 disk
+└─md0         9:0    0    2G  0 raid5
+nvme0n3     259:4    0    1G  0 disk
+└─md0         9:0    0    2G  0 raid5
+nvme0n4     259:5    0    1G  0 disk
+└─md0         9:0    0    2G  0 raid5
+
+
